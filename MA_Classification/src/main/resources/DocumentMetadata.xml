@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>DocumentMetadata</name>
+  <description>Simple document metadata</description>
+  <version>0.11</version>
+  <vendor>christianherta</vendor>
+  <types>
+    <typeDescription>
+       <name>de.christianherta.uima.cas.DocumentMetadata</name>
+      <description>Metadata for a document</description>
+      <supertypeName>uima.cas.TOP</supertypeName>
+      <features>
+        <featureDescription>
+          <name>label</name>
+          <description>A manually given label</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>documentURL</name>
+          <description>The original URL of the document</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>documentID</name>
+          <description>A unique document ID.</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>mimeType</name>
+          <description>The mime type of a document</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>source</name>
+          <description>The source of the document (e.g. the heritrix arc file the document was extracted from, or the crawl or DB it was fetched from)</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>encoding</name>
+          <description>The character encoding of this document</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>host</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
