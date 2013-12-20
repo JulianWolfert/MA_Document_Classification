@@ -29,4 +29,7 @@ public class Configuration {
 	
 	
 	public static final String OUTPUT_SOLR_XML_WRITER = "/Users/Jules/Projects/HTW/Masterarbeit";
+	
+	
+	public static final List<String> LATEX_STRINGS = Arrays.asList("Tex", "Latex");
 }

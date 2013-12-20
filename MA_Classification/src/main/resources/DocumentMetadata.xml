@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>DocumentMetadata</name>
   <description>Simple document metadata</description>
@@ -6,7 +7,7 @@
   <vendor>christianherta</vendor>
   <types>
     <typeDescription>
-       <name>de.christianherta.uima.cas.DocumentMetadata</name>
+       <name>de.juwo.uima.cas.DocumentMetadata</name>
       <description>Metadata for a document</description>
       <supertypeName>uima.cas.TOP</supertypeName>
       <features>

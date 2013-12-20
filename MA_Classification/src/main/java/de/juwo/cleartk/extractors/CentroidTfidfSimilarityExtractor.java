@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.extraktors;
+package de.juwo.cleartk.extractors;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -206,7 +206,10 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
   }
 
   public void load(URI baseURI) throws IOException {
-    URI documentFreqDataURI;
+	System.out.println("Loading statistics from:");
+	System.out.println(baseURI.toString());
+	  
+	URI documentFreqDataURI;
     URI centroidDataURI;
     try {
       documentFreqDataURI = getDocumentFrequencyDataURI(this.name, baseURI);
@@ -227,7 +230,6 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
     while ((line = reader.readLine()) != null) {
     	
       String[] featureMeanTfidf = line.split("\\t");
-      //System.out.println(featureMeanTfidf[0]);
       if(featureMeanTfidf.length > 1){
       double tfidf = Double.parseDouble(featureMeanTfidf[1]);
       this.centroidMap.put(featureMeanTfidf[0], tfidf);

@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.extraktors;
+package de.juwo.cleartk.extractors;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -204,7 +204,7 @@ public class TfidfExtractor<OUTCOME_T> extends
 		}
 
 		public void load(URI inputURI) throws IOException {
-			System.out.println("huhu");
+			System.out.println("Loading statistics from:");
 			System.out.println(inputURI.toString());
 			File in = new File(inputURI);
 			BufferedReader reader = null;

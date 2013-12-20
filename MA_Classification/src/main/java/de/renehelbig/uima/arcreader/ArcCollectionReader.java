@@ -19,10 +19,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDResources;
+import org.apache.pdfbox.pdmodel.common.PDMetadata;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.DublinCore;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.parser.pdf.PDFParser;
@@ -43,7 +52,9 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.factory.CollectionReaderFactory;
 import org.xml.sax.SAXException;
 
-import de.christianherta.uima.cas.DocumentMetadata;
+import de.juwo.uima.cas.DocumentMetadata;
+import de.juwo.uima.cas.PDFMetadata;
+
 
 
 /**
@@ -253,19 +264,24 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 					record.dump(outStream);
 
 					String documentText;
+					PDDocumentInformation pdfMetaData;
+					
 					try{
 						documentText = extractText(outStream);
+						pdfMetaData = extractPDFMetadata(outStream);
 					}catch(TikaException tex){
 						System.out.println("PDF verschluesselt oder Inhalt nicht lesbar.");
 						documentText = "";
+						pdfMetaData = null;
 					}catch(IOException ioex){
 						System.out.println("Anderer Fehler beim Verarbeiten des Inhalts");
 						documentText = "";
+						pdfMetaData = null;
 					}
 					outStream.close();
 					// only interested in documentext with a length above 0
 					if(documentText.length() > 0){
-						fillContentOfCAS(acas, currentArcfileName, header, mimetype, documentText);
+						fillContentOfCAS(acas, currentArcfileName, header, mimetype, documentText, pdfMetaData);
 					}else{
 						getNext(acas, fillCas);
 
@@ -321,6 +337,69 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 		return writer.toString();
 	}
 	/**
+	 * Method to extract metadata of pdf-document 
+	 * uses Apache Tika PDFParser for metadata extraction
+	 * @param fileContent	ByteArrayOutputStream of pdf-document
+	 * @return returns metadata of pdf document
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws TikaException
+	 */
+	private static PDDocumentInformation extractPDFMetadata(ByteArrayOutputStream fileContent) throws IOException, SAXException, TikaException {
+		// Conversion of ByteArrayOutputStream to InputStream
+		InputStream is = new ByteArrayInputStream(fileContent.toByteArray());
+//		Parser p = new PDFParser();
+//
+//		Metadata metadata = new Metadata();
+//
+//		p.parse(is, new BodyContentHandler(), metadata, new ParseContext());
+//		is.close();
+		
+		PDDocument doc = PDDocument.load(is);
+		PDDocumentInformation metadata = doc.getDocumentInformation();
+
+
+		return metadata;
+	}
+	
+	/**
+	 * Method to extract text of pdf-document 
+	 * uses Apache Tika PDFParser for text extraction
+	 * @param fileContent	ByteArrayOutputStream of pdf-document
+	 * @return returns string of document text
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws TikaException
+	 */
+	private static Metadata extractNumberOfImges (ByteArrayOutputStream fileContent) throws IOException, SAXException, TikaException {
+		
+
+		// Conversion of ByteArrayOutputStream to InputStream
+		InputStream is = new ByteArrayInputStream(fileContent.toByteArray());
+		
+		PDDocument document = PDDocument.load(is);
+		
+		
+		List pages = document.getDocumentCatalog().getAllPages();
+		Iterator iter = pages.iterator(); 
+		int i =0;
+		String name = null;
+		 
+		while (iter.hasNext())
+		{
+			PDPage page = (PDPage) iter.next();
+			PDResources resources = page.getResources();
+			Map pageImages = resources.getImages();
+			i = i + pageImages.size();
+		}
+		
+		System.out.println(i);
+
+	return null;
+	}
+	
+	
+	/**
 	 * Method to fill CAS with content
 	 * creates view in CAS to store documenttext
 	 * @param acas actual CAS
@@ -331,13 +410,27 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	 * @throws CollectionException
 	 */
 	private void fillContentOfCAS(CAS acas, String currentArcfileName, ArchiveRecordHeader header,
-			String mimetype, String documentText) throws CollectionException {
+			String mimetype, String documentText, PDDocumentInformation extractedPDFMetadata) throws CollectionException {
 		try {
 			JCas jcas = acas.getJCas();
 
+			//create view and set doc text
 			jcas.createView(header.getUrl());
 			jcas.setDocumentText(documentText);
 
+			//add pdfMetadata annotation to cas
+			if (extractedPDFMetadata != null) {
+			
+				PDFMetadata pdfMetadata = new PDFMetadata(jcas);
+				pdfMetadata.setAuthor(extractedPDFMetadata.getAuthor());
+				pdfMetadata.setCreator(extractedPDFMetadata.getCreator());
+				pdfMetadata.setTitle(extractedPDFMetadata.getTitle());	
+				pdfMetadata.setProducer(extractedPDFMetadata.getProducer());
+				jcas.addFsToIndexes(pdfMetadata);
+			
+			}
+			
+			//add documentMetadata annotation to cas
 			DocumentMetadata metadata = new DocumentMetadata(jcas);
 			String docUrl = header.getUrl();
 			String id = header.getUrl();
@@ -346,6 +439,8 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 			metadata.setSource(currentArcfileName);
 			metadata.setMimeType(mimetype);
 			jcas.addFsToIndexes(metadata);
+			
+			
 			java.net.URI uri;
 			try {
 				uri = new java.net.URI(header.getUrl());

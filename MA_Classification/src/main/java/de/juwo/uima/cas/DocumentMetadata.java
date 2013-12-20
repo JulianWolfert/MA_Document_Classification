@@ -1,7 +1,7 @@
 
 
-/* First created by JCasGen Fri Oct 25 21:55:02 CEST 2013 */
-package de.christianherta.uima.cas;
+/* First created by JCasGen Fri Dec 13 18:16:14 CET 2013 */
+package de.juwo.uima.cas;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.TOP;
 
 
 /** Metadata for a document
- * Updated by JCasGen Fri Oct 25 21:55:02 CEST 2013
+ * Updated by JCasGen Fri Dec 13 18:16:14 CET 2013
  * XML source: /Users/Jules/Projects/HTW/Masterarbeit_Repo/MA_Classification/src/main/resources/DocumentMetadata.xml
  * @generated */
 public class DocumentMetadata extends TOP {
@@ -61,14 +61,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getLabel() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_label == null)
-      jcasType.jcas.throwFeatMissing("label", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("label", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_label);}
     
   /** setter for label - sets A manually given label 
    * @generated */
   public void setLabel(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_label == null)
-      jcasType.jcas.throwFeatMissing("label", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("label", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_label, v);}    
    
     
@@ -79,14 +79,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getDocumentURL() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_documentURL == null)
-      jcasType.jcas.throwFeatMissing("documentURL", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("documentURL", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_documentURL);}
     
   /** setter for documentURL - sets The original URL of the document 
    * @generated */
   public void setDocumentURL(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_documentURL == null)
-      jcasType.jcas.throwFeatMissing("documentURL", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("documentURL", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_documentURL, v);}    
    
     
@@ -97,14 +97,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getDocumentID() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_documentID == null)
-      jcasType.jcas.throwFeatMissing("documentID", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("documentID", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_documentID);}
     
   /** setter for documentID - sets A unique document ID. 
    * @generated */
   public void setDocumentID(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_documentID == null)
-      jcasType.jcas.throwFeatMissing("documentID", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("documentID", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_documentID, v);}    
    
     
@@ -115,14 +115,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getMimeType() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_mimeType == null)
-      jcasType.jcas.throwFeatMissing("mimeType", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("mimeType", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_mimeType);}
     
   /** setter for mimeType - sets The mime type of a document 
    * @generated */
   public void setMimeType(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_mimeType == null)
-      jcasType.jcas.throwFeatMissing("mimeType", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("mimeType", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_mimeType, v);}    
    
     
@@ -133,14 +133,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getSource() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_source == null)
-      jcasType.jcas.throwFeatMissing("source", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("source", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_source);}
     
   /** setter for source - sets The source of the document (e.g. the heritrix arc file the document was extracted from, or the crawl or DB it was fetched from) 
    * @generated */
   public void setSource(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_source == null)
-      jcasType.jcas.throwFeatMissing("source", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("source", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_source, v);}    
    
     
@@ -151,14 +151,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getEncoding() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_encoding == null)
-      jcasType.jcas.throwFeatMissing("encoding", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("encoding", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_encoding);}
     
   /** setter for encoding - sets The character encoding of this document 
    * @generated */
   public void setEncoding(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_encoding == null)
-      jcasType.jcas.throwFeatMissing("encoding", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("encoding", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_encoding, v);}    
    
     
@@ -169,14 +169,14 @@ public class DocumentMetadata extends TOP {
    * @generated */
   public String getHost() {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_host == null)
-      jcasType.jcas.throwFeatMissing("host", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("host", "de.juwo.uima.cas.DocumentMetadata");
     return jcasType.ll_cas.ll_getStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_host);}
     
   /** setter for host - sets  
    * @generated */
   public void setHost(String v) {
     if (DocumentMetadata_Type.featOkTst && ((DocumentMetadata_Type)jcasType).casFeat_host == null)
-      jcasType.jcas.throwFeatMissing("host", "de.christianherta.uima.cas.DocumentMetadata");
+      jcasType.jcas.throwFeatMissing("host", "de.juwo.uima.cas.DocumentMetadata");
     jcasType.ll_cas.ll_setStringValue(addr, ((DocumentMetadata_Type)jcasType).casFeatCode_host, v);}    
   }
 

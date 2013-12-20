@@ -27,7 +27,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasConsumer_ImplBase;
 import org.uimafit.util.JCasUtil;
 
-import de.christianherta.uima.cas.DocumentMetadata;
 import de.juwo.util.Configuration;
 
 public class SolrXMLFileWriter extends JCasConsumer_ImplBase {

@@ -45,9 +45,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
-import org.cleartk.classifier.feature.transform.extractor.CentroidTfidfSimilarityExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
-import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.examples.type.UsenetDocument;
@@ -59,6 +57,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
+import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
+import de.juwo.cleartk.extractors.LatexExtractor;
+import de.juwo.cleartk.extractors.TfidfExtractor;
 import de.renehelbig.uima.arcreader.LabelStorage;
 
 
@@ -151,12 +152,16 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
       CentroidTfidfSimilarityExtractor<String> simExtractor = initCentroidTfIdfSimilarityExtractor();
       ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
-      MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor(); 
+      MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
+      
+      LatexExtractor<String> latexExtractor = new LatexExtractor();
+      
       this.extractor = new CombinedExtractor(
           tfIdfExtractor,
           simExtractor,
           zmusExtractor,
-          minmaxExtractor);
+          minmaxExtractor,
+          latexExtractor);
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
@@ -246,7 +251,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       
       this.storage.writeClassifiedClassLabel(ViewURIUtil.getURI(jCas).toString(), result);
       documentCounter++;
-      System.out.println("Dokumente: "+ documentCounter);
+      System.out.println("Number of classified documents: "+ documentCounter);
       
     }
   }

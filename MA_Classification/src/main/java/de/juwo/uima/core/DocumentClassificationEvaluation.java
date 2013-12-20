@@ -39,9 +39,7 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.transform.InstanceDataWriter;
 import org.cleartk.classifier.feature.transform.InstanceStream;
-import org.cleartk.classifier.feature.transform.extractor.CentroidTfidfSimilarityExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
-import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -62,6 +60,8 @@ import org.uimafit.util.JCasUtil;
 import com.google.common.base.Function;
 
 import de.christianherta.uima.core.casconsumer.SolrXMLFileWriter;
+import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
+import de.juwo.cleartk.extractors.TfidfExtractor;
 import de.juwo.util.Configuration;
 import de.renehelbig.uima.arcreader.ArcCollectionReader;
 

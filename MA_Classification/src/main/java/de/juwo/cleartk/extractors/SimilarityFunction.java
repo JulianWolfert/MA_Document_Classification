@@ -21,13 +21,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.extraktors;
+package de.juwo.cleartk.extractors;
 
 import java.util.Map;
 
 /**
- * Like cosine similarity, but accepts a pre-specified vector, to avoid repeated recalculation of
- * the magnitude
  * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -35,27 +33,6 @@ import java.util.Map;
  * 
  * @author Lee Becker
  */
-public class FixedCosineSimilarity implements SimilarityFunction {
-
-  protected Map<String, Double> fixedVector;
-
-  protected double fixedMagnitude;
-
-  public FixedCosineSimilarity(Map<String, Double> fixedVector) {
-    this.fixedVector = fixedVector;
-    this.fixedMagnitude = CosineSimilarity.magnitude(fixedVector);
-  }
-
-  public double distance(Map<String, Double> vector) {
-    double magnitude = CosineSimilarity.magnitude(vector);
-    return (magnitude == 0.0 || fixedMagnitude == 0) ? 0.0 : CosineSimilarity.dotProduct(
-        vector,
-        this.fixedVector) / (magnitude * fixedMagnitude);
-  }
-
-  @Override
-  public double distance(Map<String, Double> vector1, Map<String, Double> vector2) {
-    return this.distance(vector1);
-  }
-
+public interface SimilarityFunction {
+  public double distance(Map<String, Double> vector1, Map<String, Double> vector2);
 }
