@@ -13,7 +13,7 @@ public class Configuration {
 	public static final String TEST_ARC_PATH 		= 	"/Users/Jules/Projects/HTW/Masterarbeit/Testlauf_Test";
 	public static final String PRED_ARC_PATH		= 	"/Users/Jules/Projects/HTW/Masterarbeit/Testlauf_Class";
 	public static final String LABEL_STORAGE_PATH	=   "/Users/Jules/Projects/HTW/Masterarbeit";
-	public static final String MODEL_PATH 			= 	"target/document_classification/models";
+	public static final String MODEL_PATH 			= 	"/Users/Jules/Projects/HTW/Masterarbeit/Model";
 	
 	
 	public static final String CLASS_1				=	"is.Teach";

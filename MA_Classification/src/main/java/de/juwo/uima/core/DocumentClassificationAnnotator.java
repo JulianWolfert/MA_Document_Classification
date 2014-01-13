@@ -60,6 +60,7 @@ import org.uimafit.util.JCasUtil;
 import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
 import de.juwo.cleartk.extractors.LatexExtractor;
 import de.juwo.cleartk.extractors.TfidfExtractor;
+import de.juwo.cleartk.extractors.TitleExtractor;
 import de.renehelbig.uima.arcreader.LabelStorage;
 
 
@@ -154,14 +155,16 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
       MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
       
-      LatexExtractor<String> latexExtractor = new LatexExtractor();
+      LatexExtractor<String> latexExtractor = new LatexExtractor<String>();
+      TitleExtractor<String> titleExtractor = new TitleExtractor<String>();
       
       this.extractor = new CombinedExtractor(
           tfIdfExtractor,
           simExtractor,
           zmusExtractor,
           minmaxExtractor,
-          latexExtractor);
+          latexExtractor,
+          titleExtractor);
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }

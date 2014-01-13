@@ -10,10 +10,11 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
+import de.juwo.uima.cas.DocumentMetadata;
 import de.juwo.uima.cas.PDFMetadata;
 import de.juwo.util.Configuration;
 
-public class LatexExtractor<OUTCOME_T> implements SimpleFeatureExtractor{
+public class TitleExtractor<OUTCOME_T> implements SimpleFeatureExtractor{
 
 	@Override
 	public List<Feature> extract(JCas view, Annotation focusAnnotation)
@@ -23,38 +24,24 @@ public class LatexExtractor<OUTCOME_T> implements SimpleFeatureExtractor{
 				PDFMetadata.type);
 		
 		List<Feature> result = new ArrayList<Feature>();
-		Feature f = new Feature("Latex", 0);
+
 		
 		if (iterator.hasNext()) {
 		
 			PDFMetadata pdfMetadata = (PDFMetadata) iterator.next();
 			
-			String creator = pdfMetadata.getCreator();
-			String producer = pdfMetadata.getProducer();
-			String author = pdfMetadata.getAuthor();
-			
-			for (int i=0; i < Configuration.LATEX_STRINGS.size(); i++) {
+			String title = pdfMetadata.getTitle();
+
+			if (title != null) {
+				String[] title_parts = title.split(" ");
 				
-				if (creator != null && creator.contains(Configuration.LATEX_STRINGS.get(i))) {
-					f.setValue(1);
-					System.out.println("Found one with Latex");
-					break;
+				for (int i=0; i < title_parts.length; i++) {
+					Feature f = new Feature("Title_" + title_parts[i], 1);
+					result.add(f);
 				}
-				if (producer != null && producer.contains(Configuration.LATEX_STRINGS.get(i))) {
-					f.setValue(1);
-					System.out.println("Found one with Latex");
-					break;
-				}
-				if (author != null && producer.contains(Configuration.LATEX_STRINGS.get(i))) {
-					f.setValue(1);
-					System.out.println("Found one with Latex");
-					break;
-				}
-				
 			}
-			
 		}	
-		result.add(f);
+		
 		return result;
 	}
 

@@ -10,6 +10,8 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import de.juwo.util.Configuration;
+
 
 public class LabelStorage implements LabelStorageInterface {
 	// directory of documents with class labels
@@ -22,7 +24,7 @@ public class LabelStorage implements LabelStorageInterface {
 	 * @param classLabel label of documents class
 	 */
 	public void writeClassLabel(String url, String classLabel) {
-		File labelLogForArc = new File(this.workingDir+"TrainingLabels.txt");
+		File labelLogForArc = new File(Configuration.TRAIN_ARC_PATH+"/TrainingLabels.txt");
         if (labelLogForArc != null) {
             boolean fileExists = labelLogForArc.exists();
 
@@ -65,7 +67,7 @@ public class LabelStorage implements LabelStorageInterface {
 	 * @param classLabel classlabel of document
 	 */
 	public void writeClassifiedClassLabel(String url, String classLabel) {
-		File labelLogForArc = new File(this.workingDir+"ClassyLabels.txt");
+		File labelLogForArc = new File(Configuration.PRED_ARC_PATH+"/ClassificationLabels.txt");
         if (labelLogForArc != null) {
             boolean fileExists = labelLogForArc.exists();
             if (!fileExists) {
@@ -104,7 +106,7 @@ public class LabelStorage implements LabelStorageInterface {
 	 */
 	public HashMap<String, String> getAllClassLabels() {
 		HashMap<String, String> uriIsClass =  new HashMap<String, String>();
-		File dir = new File(workingDir);
+		File dir = new File(Configuration.TRAIN_ARC_PATH);
 		//Classlabels stored in different textfiles take all
 		File[] fileList = dir.listFiles(new FilenameFilter() {
 		    public boolean accept(File d, String name) {
@@ -112,7 +114,7 @@ public class LabelStorage implements LabelStorageInterface {
 			    }
 			});
 		for(File f : fileList){
-			System.out.println(f.getName());
+			System.out.println("Read class labels from file: " + f.getName());
 			try {
 				BufferedReader in = new BufferedReader(new FileReader(f));
 				String row = null;
@@ -126,7 +128,7 @@ public class LabelStorage implements LabelStorageInterface {
 					}
 				}
 			} catch (FileNotFoundException e) {
-				System.out.println("Datei nicht gefunden.");
+				System.out.println("File not found.");
 				e.printStackTrace();
 			} catch (IOException e){
 				

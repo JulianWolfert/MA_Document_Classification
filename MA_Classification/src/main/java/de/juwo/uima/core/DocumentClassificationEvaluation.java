@@ -153,9 +153,9 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		
 		System.err.println("###### START CLASSIFICATION ######");
 		
-		AggregateBuilder builder = DocumentPreprocessor.createPreprocessingAggregate(Configuration.AnnotatorMode.TRAIN, GOLD_VIEW_NAME);
+		AggregateBuilder builder = DocumentPreprocessor.createPreprocessingAggregate(Configuration.AnnotatorMode.CLASSIFY, GOLD_VIEW_NAME);
 		
-		builder = createPipeline(builder, modelDirectory, Configuration.AnnotatorMode.TRAIN);
+		builder = createPipeline(builder, modelDirectory, Configuration.AnnotatorMode.CLASSIFY);
 		
 	    //run pipeline
 	    SimplePipeline.runPipeline(collectionReader, builder.createAggregateDescription());
@@ -329,7 +329,7 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 			instance = minmaxExtractor.transform(instance);
 			dataWriter.write(instance);
 		}
-		System.out.println("Lauf: "+i);
+		System.out.println("Number of documents for training: "+i);
 		dataWriter.finish();
 		
 	}

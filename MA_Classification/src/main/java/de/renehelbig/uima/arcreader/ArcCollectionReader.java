@@ -155,6 +155,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	public void initialize() throws ResourceInitializationException {
 		this.mCurrentIndex = 0;
 		this.mAllArcFiles.clear();
+		
 
 		// initialize input directory parameter
 		this.inputDirectory = new File(((String) PARAM_INPUTDIR).trim());
@@ -182,6 +183,8 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 		// get a (sorted) list of files (not subdirectories) in the specified directory
 		File[] allArcFiles = this.inputDirectory.listFiles(new ArcGzFilter());
 
+		System.out.println("Read Collection from: " + this.inputDirectory);
+		
 		if (allArcFiles.length == 0) {
 			logger.warn("no files with extension " + ArcGzFilter.ARC_GZ_FILEENDING
 					+ " found in input directory");
@@ -244,22 +247,24 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 		}
 		if (record != null) {
 			ArchiveRecordHeader header = record.getHeader();
-			String mimetype = header.getMimetype();
+			
 			// skip header
 			record.skip(header.getContentBegin());
-			// dump content of record in outputstream
 
 			// check mime type -> only interested in pdf
+			String mimetype = header.getMimetype();
 			if (!mimetype.toLowerCase().startsWith("application/pdf")) {
 				String error = "Found non application/PDF document in Arc-File+" + currentArcfileName
 						+ ". Mime-Type was: " + mimetype;
 				getNext(acas, fillCas);
-
 				return;
 			} 
+			
+			// extract text and metadata if pdf
 			if (fillCas && mimetype.toLowerCase().startsWith("application/pdf")) {
 				try {
 
+					// dump content of record in outputstream
 					ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 					record.dump(outStream);
 
@@ -270,21 +275,21 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 						documentText = extractText(outStream);
 						pdfMetaData = extractPDFMetadata(outStream);
 					}catch(TikaException tex){
-						System.out.println("PDF verschluesselt oder Inhalt nicht lesbar.");
+						System.out.println("PDF encrypted or not readable");
 						documentText = "";
 						pdfMetaData = null;
 					}catch(IOException ioex){
-						System.out.println("Anderer Fehler beim Verarbeiten des Inhalts");
+						System.out.println("Error on parsing pdf document");
 						documentText = "";
 						pdfMetaData = null;
 					}
 					outStream.close();
+					
 					// only interested in documentext with a length above 0
 					if(documentText.length() > 0){
 						fillContentOfCAS(acas, currentArcfileName, header, mimetype, documentText, pdfMetaData);
 					}else{
 						getNext(acas, fillCas);
-
 						return;
 					}
 				} catch (Exception e) {
@@ -330,6 +335,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 
 		StringWriter writer = new StringWriter();
 
+		//Parse PDF Document with Tika
 		p.parse(is, new BodyContentHandler(writer), new Metadata(), new ParseContext());
 		is.close();
 
@@ -348,55 +354,14 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	private static PDDocumentInformation extractPDFMetadata(ByteArrayOutputStream fileContent) throws IOException, SAXException, TikaException {
 		// Conversion of ByteArrayOutputStream to InputStream
 		InputStream is = new ByteArrayInputStream(fileContent.toByteArray());
-//		Parser p = new PDFParser();
-//
-//		Metadata metadata = new Metadata();
-//
-//		p.parse(is, new BodyContentHandler(), metadata, new ParseContext());
-//		is.close();
 		
+		//Load PDF Metadata with PDFBOX Library
 		PDDocument doc = PDDocument.load(is);
 		PDDocumentInformation metadata = doc.getDocumentInformation();
-
 
 		return metadata;
 	}
 	
-	/**
-	 * Method to extract text of pdf-document 
-	 * uses Apache Tika PDFParser for text extraction
-	 * @param fileContent	ByteArrayOutputStream of pdf-document
-	 * @return returns string of document text
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws TikaException
-	 */
-	private static Metadata extractNumberOfImges (ByteArrayOutputStream fileContent) throws IOException, SAXException, TikaException {
-		
-
-		// Conversion of ByteArrayOutputStream to InputStream
-		InputStream is = new ByteArrayInputStream(fileContent.toByteArray());
-		
-		PDDocument document = PDDocument.load(is);
-		
-		
-		List pages = document.getDocumentCatalog().getAllPages();
-		Iterator iter = pages.iterator(); 
-		int i =0;
-		String name = null;
-		 
-		while (iter.hasNext())
-		{
-			PDPage page = (PDPage) iter.next();
-			PDResources resources = page.getResources();
-			Map pageImages = resources.getImages();
-			i = i + pageImages.size();
-		}
-		
-		System.out.println(i);
-
-	return null;
-	}
 	
 	
 	/**
@@ -411,6 +376,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	 */
 	private void fillContentOfCAS(CAS acas, String currentArcfileName, ArchiveRecordHeader header,
 			String mimetype, String documentText, PDDocumentInformation extractedPDFMetadata) throws CollectionException {
+		
 		try {
 			JCas jcas = acas.getJCas();
 
@@ -495,7 +461,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 					}
 				}
 				if (!this.hasNextArcFileIterator.hasNext()) {
-					System.out.println("Kein weiterer Record im ARC");
+					System.out.println("No more document in this ARC-Archive");
 					// log current arcfile name to "processedArcs" file for checkpointing
 					String currentArcfileName = this.mAllArcFiles.get(this.mCurrentIndex).getName();
 					this.markArcFileAsProcessed(currentArcfileName);

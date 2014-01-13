@@ -36,6 +36,7 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 
 import de.renehelbig.uima.arcreader.LabelStorage;
+import de.juwo.util.*;
 
 
 /**
@@ -50,8 +51,8 @@ import de.renehelbig.uima.arcreader.LabelStorage;
  */
 public class GoldDocumentCategoryAnnotator extends JCasAnnotator_ImplBase {
 	private HashMap<String, String> uriIsClass = null;
-	private int teachStuffCounter = 0;
-	private int otherStuffCounter = 0;
+	private int class_1_counter = 0;
+	private int class_2_counter = 0;
 
 	public GoldDocumentCategoryAnnotator(){
 		LabelStorage storage = new LabelStorage();
@@ -67,22 +68,23 @@ public class GoldDocumentCategoryAnnotator extends JCasAnnotator_ImplBase {
 			URI uri = new URI(uriView.getSofaDataURI());
 
 			if(jCas.getDocumentText() != null && this.uriIsClass.get(uri.toString().trim()) != null){
+				
 				UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
-				if(this.uriIsClass.get(uri.toString().trim()).equals("isTeach") ){
-					document.setCategory("is.Teach");
-					teachStuffCounter++;
+				if(this.uriIsClass.get(uri.toString().trim()).equals(Configuration.CLASS_1) ){
+					document.setCategory(Configuration.CLASS_1);
+					class_1_counter++;
 				}else{
-					document.setCategory("rs.no");
-					otherStuffCounter++;
+					document.setCategory(Configuration.CLASS_2);
+					class_2_counter++;
 				}
-
 				document.addToIndexes();
-			}else{
-				// if document was never labeled manually make it part of rs.no (!isTeach)
+			}
+			else{
+				// if document was never labeled manually make it part of class 2
 				UsenetDocument document = new UsenetDocument(jCas, 0, 0);
-				document.setCategory("rs.no");
-				System.out.println("Not Found ");
-				otherStuffCounter++;
+				document.setCategory(Configuration.CLASS_2);
+				System.out.println("Document isn't labeled");
+				class_2_counter++;
 				document.addToIndexes();
 			}
 

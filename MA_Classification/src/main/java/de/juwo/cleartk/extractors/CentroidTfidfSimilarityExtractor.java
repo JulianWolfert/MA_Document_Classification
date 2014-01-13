@@ -206,7 +206,7 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
   }
 
   public void load(URI baseURI) throws IOException {
-	System.out.println("Loading statistics from:");
+	System.out.print("Loading statistics from: ");
 	System.out.println(baseURI.toString());
 	  
 	URI documentFreqDataURI;

@@ -204,7 +204,7 @@ public class TfidfExtractor<OUTCOME_T> extends
 		}
 
 		public void load(URI inputURI) throws IOException {
-			System.out.println("Loading statistics from:");
+			System.out.print ("Loading statistics from: ");
 			System.out.println(inputURI.toString());
 			File in = new File(inputURI);
 			BufferedReader reader = null;
