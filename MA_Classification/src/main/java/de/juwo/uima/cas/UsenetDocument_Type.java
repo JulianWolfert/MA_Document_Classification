@@ -1,6 +1,6 @@
 
-/* First created by JCasGen Wed Oct 30 14:52:58 CET 2013 */
-package org.cleartk.examples.type;
+/* First created by JCasGen Thu Jan 16 17:41:37 CET 2014 */
+package de.juwo.uima.cas;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Wed Oct 30 14:52:58 CET 2013
+ * Updated by JCasGen Thu Jan 16 17:41:37 CET 2014
  * @generated */
 public class UsenetDocument_Type extends Annotation_Type {
   /** @generated */
@@ -42,7 +42,7 @@ public class UsenetDocument_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.cleartk.examples.type.UsenetDocument");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("de.juwo.uima.cas.UsenetDocument");
  
   /** @generated */
   final Feature casFeat_category;
@@ -51,13 +51,13 @@ public class UsenetDocument_Type extends Annotation_Type {
   /** @generated */ 
   public String getCategory(int addr) {
         if (featOkTst && casFeat_category == null)
-      jcas.throwFeatMissing("category", "org.cleartk.examples.type.UsenetDocument");
+      jcas.throwFeatMissing("category", "de.juwo.uima.cas.UsenetDocument");
     return ll_cas.ll_getStringValue(addr, casFeatCode_category);
   }
   /** @generated */    
   public void setCategory(int addr, String v) {
         if (featOkTst && casFeat_category == null)
-      jcas.throwFeatMissing("category", "org.cleartk.examples.type.UsenetDocument");
+      jcas.throwFeatMissing("category", "de.juwo.uima.cas.UsenetDocument");
     ll_cas.ll_setStringValue(addr, casFeatCode_category, v);}
     
   

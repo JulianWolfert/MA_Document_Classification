@@ -48,7 +48,6 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtract
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewURIUtil;
@@ -61,6 +60,7 @@ import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
 import de.juwo.cleartk.extractors.LatexExtractor;
 import de.juwo.cleartk.extractors.TfidfExtractor;
 import de.juwo.cleartk.extractors.TitleExtractor;
+import de.juwo.uima.cas.UsenetDocument;
 import de.renehelbig.uima.arcreader.LabelStorage;
 
 

@@ -1,12 +1,22 @@
 package de.juwo.uima.main;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import de.juwo.util.Configuration;
+
 public class Suite {
 
 	public static void main(String[] args) throws Exception {
-	    // Local variable
+	    
+		if (args.length != 0) {
+			Configuration.loadConfigFromFile(args[0]);
+		}	
+		
+		// Local variable
 	    int swValue = 0;
 
-	    while (swValue != 5) {
+	    while (swValue != 6) {
 	    
 	    // Display menu graphics
 	    System.out.println();
@@ -17,7 +27,8 @@ public class Suite {
 	    System.out.println("|2. Test Model                  |");
 	    System.out.println("|3. Start Classification        |");
 	    System.out.println("|4. Start Label Software        |");
-	    System.out.println("|5. Exit                        |");
+	    System.out.println("|5. Show Configuration          |");
+	    System.out.println("|6. Exit                        |");
 	    System.out.println("================================");
 	    swValue = Keyin.inInt("Select option: ");
 	    System.out.println();
@@ -33,6 +44,9 @@ public class Suite {
 	    case 3:
 	      RunModel.main(args);
 	      break;
+	    case 5:
+			Configuration.showConfig();
+			break;
 	    default:
 	      System.out.println("Invalid selection");
 	      break; // This break is not really necessary

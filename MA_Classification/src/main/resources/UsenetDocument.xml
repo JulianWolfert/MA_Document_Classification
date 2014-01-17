@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>UsenetDocument</name>
   <description>Copyright (c) 2012, Regents of the University of Colorado 
@@ -26,7 +27,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
   <vendor>Copyright 2012 Regents of the University of Colorado.   All Rights Reserved.</vendor>
   <types>
     <typeDescription>
-      <name>org.cleartk.examples.type.UsenetDocument</name>
+      <name>de.juwo.uima.cas.UsenetDocument</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

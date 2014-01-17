@@ -1,7 +1,7 @@
 
 
-/* First created by JCasGen Wed Oct 30 14:52:58 CET 2013 */
-package org.cleartk.examples.type;
+/* First created by JCasGen Thu Jan 16 17:41:37 CET 2014 */
+package de.juwo.uima.cas;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Oct 30 14:52:58 CET 2013
+ * Updated by JCasGen Thu Jan 16 17:41:37 CET 2014
  * XML source: /Users/Jules/Projects/HTW/Masterarbeit_Repo/MA_Classification/src/main/resources/UsenetDocument.xml
  * @generated */
 public class UsenetDocument extends Annotation {
@@ -69,14 +69,14 @@ public class UsenetDocument extends Annotation {
    * @generated */
   public String getCategory() {
     if (UsenetDocument_Type.featOkTst && ((UsenetDocument_Type)jcasType).casFeat_category == null)
-      jcasType.jcas.throwFeatMissing("category", "org.cleartk.examples.type.UsenetDocument");
+      jcasType.jcas.throwFeatMissing("category", "de.juwo.uima.cas.UsenetDocument");
     return jcasType.ll_cas.ll_getStringValue(addr, ((UsenetDocument_Type)jcasType).casFeatCode_category);}
     
   /** setter for category - sets The category label for the document (e.g. sports, entertainment, politics ...) 
    * @generated */
   public void setCategory(String v) {
     if (UsenetDocument_Type.featOkTst && ((UsenetDocument_Type)jcasType).casFeat_category == null)
-      jcasType.jcas.throwFeatMissing("category", "org.cleartk.examples.type.UsenetDocument");
+      jcasType.jcas.throwFeatMissing("category", "de.juwo.uima.cas.UsenetDocument");
     jcasType.ll_cas.ll_setStringValue(addr, ((UsenetDocument_Type)jcasType).casFeatCode_category, v);}    
   }
 

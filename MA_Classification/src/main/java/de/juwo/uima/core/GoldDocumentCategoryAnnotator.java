@@ -31,11 +31,11 @@ import java.util.HashMap;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 
 import de.renehelbig.uima.arcreader.LabelStorage;
+import de.juwo.uima.cas.UsenetDocument;
 import de.juwo.util.*;
 
 

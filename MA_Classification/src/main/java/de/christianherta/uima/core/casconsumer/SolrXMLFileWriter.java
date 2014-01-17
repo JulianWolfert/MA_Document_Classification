@@ -22,11 +22,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
  
 
-import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasConsumer_ImplBase;
 import org.uimafit.util.JCasUtil;
 
+import de.juwo.uima.cas.UsenetDocument;
 import de.juwo.util.Configuration;
 
 public class SolrXMLFileWriter extends JCasConsumer_ImplBase {

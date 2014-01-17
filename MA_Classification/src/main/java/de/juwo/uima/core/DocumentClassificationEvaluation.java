@@ -48,7 +48,6 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
-import org.cleartk.examples.type.UsenetDocument;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -62,6 +61,7 @@ import com.google.common.base.Function;
 import de.christianherta.uima.core.casconsumer.SolrXMLFileWriter;
 import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
 import de.juwo.cleartk.extractors.TfidfExtractor;
+import de.juwo.uima.cas.UsenetDocument;
 import de.juwo.util.Configuration;
 import de.renehelbig.uima.arcreader.ArcCollectionReader;
 
