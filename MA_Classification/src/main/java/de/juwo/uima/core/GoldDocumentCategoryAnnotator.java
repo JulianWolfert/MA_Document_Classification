@@ -69,6 +69,7 @@ public class GoldDocumentCategoryAnnotator extends JCasAnnotator_ImplBase {
 
 			if(jCas.getDocumentText() != null && this.uriIsClass.get(uri.toString().trim()) != null){
 				
+				//Get document and get label from label storage for this document
 				UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
 				if(this.uriIsClass.get(uri.toString().trim()).equals(Configuration.CLASS_1) ){
 					document.setCategory(Configuration.CLASS_1);

@@ -96,8 +96,9 @@ import de.juwo.uima.cas.PDFMetadata;
  * </tr>
  * </table>
  * 
- * @author Rene Helbig previous version by Prof. Dr. Herta
- * Changes to extract Text of Documents and to work with clearTK
+ * @author Julian Wolfert previous versions by Prof. Dr. Herta and Rene Helbig
+ * Changes to extract Text and metadata of Documents and to work with clearTK
+ * Changes to work with cross validation of clearTK
  */
 public class ArcCollectionReader extends CollectionReader_ImplBase {
 
@@ -114,7 +115,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	public static String PARAM_PROCESSEDARCSLOG = PARAM_INPUTDIR.trim()+"/ProcessedArcsLogfile.txt";
 
 	private int mCurrentIndex = 0;
-	ArrayList<File> mAllArcFiles = new ArrayList<File>();
+	private static ArrayList<File> mAllArcFiles = new ArrayList<File>();
 	// internaly used iterator over records in one arc-file
 	private Iterator<ArchiveRecord> arcFileIterator = null;
 	private Iterator<ArchiveRecord> hasNextArcFileIterator = null;
@@ -153,64 +154,86 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	 */
 	@Override
 	public void initialize() throws ResourceInitializationException {
-		this.mCurrentIndex = 0;
-		this.mAllArcFiles.clear();
-		
 
-		// initialize input directory parameter
-		this.inputDirectory = new File(((String) PARAM_INPUTDIR).trim());
-		// if input directory does not exist or is not a directory, throw exception
-		if (!this.inputDirectory.exists() || !this.inputDirectory.isDirectory()) {
-			throw new ResourceInitializationException(ResourceConfigurationException.DIRECTORY_NOT_FOUND,
-					new Object[] { PARAM_INPUTDIR, this.getMetaData().getName(),
-					this.inputDirectory.getPath() });
-		}
-		logger.info("Reading heritrix arc-files from input directory: "
-				+ this.inputDirectory.getAbsolutePath());
+		//If this is empty we work with all files in the directory
+		//Used for training,testing and classification
+		//If this not empty, its already set by cross validation
+		if (this.mAllArcFiles.isEmpty()) {
 
-		// initialize the processed Arc-Logfile parameter
-		String processedArcLogPath = (String) PARAM_PROCESSEDARCSLOG;
-		if (processedArcLogPath != null) {
-			this.processedArcLogfile = new File(processedArcLogPath);
-			logger.info("logfile for processed arc-files: " + this.processedArcLogfile.getAbsolutePath());
-		}
+			this.mCurrentIndex = 0;
+			this.mAllArcFiles.clear();
 
-		if (this.processedArcLogfile != null && this.processedArcLogfile.exists()) {
-			// try to get a list of all already processed arc-files.
-			this.alreadyProcessedFiles = this.readLogOfProcessedFiles(this.processedArcLogfile);
-		}
+			// initialize input directory parameter
+			this.inputDirectory = new File(((String) PARAM_INPUTDIR).trim());
+			// if input directory does not exist or is not a directory, throw
+			// exception
+			if (!this.inputDirectory.exists()
+					|| !this.inputDirectory.isDirectory()) {
+				throw new ResourceInitializationException(
+						ResourceConfigurationException.DIRECTORY_NOT_FOUND,
+						new Object[] { PARAM_INPUTDIR,
+								this.getMetaData().getName(),
+								this.inputDirectory.getPath() });
+			}
+			logger.info("Reading heritrix arc-files from input directory: "
+					+ this.inputDirectory.getAbsolutePath());
 
-		// get a (sorted) list of files (not subdirectories) in the specified directory
-		File[] allArcFiles = this.inputDirectory.listFiles(new ArcGzFilter());
+			// initialize the processed Arc-Logfile parameter
+			String processedArcLogPath = (String) PARAM_PROCESSEDARCSLOG;
+			if (processedArcLogPath != null) {
+				this.processedArcLogfile = new File(processedArcLogPath);
+				logger.info("logfile for processed arc-files: "
+						+ this.processedArcLogfile.getAbsolutePath());
+			}
 
-		System.out.println("Read Collection from: " + this.inputDirectory);
-		
-		if (allArcFiles.length == 0) {
-			logger.warn("no files with extension " + ArcGzFilter.ARC_GZ_FILEENDING
-					+ " found in input directory");
-		}
+			if (this.processedArcLogfile != null
+					&& this.processedArcLogfile.exists()) {
+				// try to get a list of all already processed arc-files.
+				this.alreadyProcessedFiles = this
+						.readLogOfProcessedFiles(this.processedArcLogfile);
+			}
 
-		Arrays.sort(allArcFiles);
+			// get a (sorted) list of files (not subdirectories) in the
+			// specified directory
+			File[] allArcFiles = this.inputDirectory
+					.listFiles(new ArcGzFilter());
 
-		for (File arcfile : allArcFiles) {
-			if (!arcfile.isDirectory()) {
-				// check that arcfiles name is not on the list of already processed files
-				String arcFileName = arcfile.getName();
-				if (!this.alreadyProcessedFiles.contains(arcFileName)) {
-					this.mAllArcFiles.add(arcfile);
-					logger.info("adding arcfile " + arcFileName + " to list of files to process.");
-				} else {
-					logger.info("skipping arcfile " + arcFileName + " because there was an entry in "
-							+ this.processedArcLogfile.getName() + "file was already processed before.");
+			System.out.println("CollectionReader: Read collection from: " + this.inputDirectory);
+
+			if (allArcFiles.length == 0) {
+				logger.warn("no files with extension "
+						+ ArcGzFilter.ARC_GZ_FILEENDING
+						+ " found in input directory");
+			}
+
+			Arrays.sort(allArcFiles);
+
+			for (File arcfile : allArcFiles) {
+				if (!arcfile.isDirectory()) {
+					// check that arcfiles name is not on the list of already
+					// processed files
+					String arcFileName = arcfile.getName();
+					if (!this.alreadyProcessedFiles.contains(arcFileName)) {
+						this.mAllArcFiles.add(arcfile);
+						logger.info("adding arcfile " + arcFileName
+								+ " to list of files to process.");
+					} else {
+						logger.info("skipping arcfile " + arcFileName
+								+ " because there was an entry in "
+								+ this.processedArcLogfile.getName()
+								+ "file was already processed before.");
+					}
 				}
 			}
-		}
 
+		}
 		// initialize current iterator
 		if (this.mAllArcFiles.size() > 0) {
 			try {
-				this.arcFileIterator = new ArcFileIterator(this.mAllArcFiles.get(this.mCurrentIndex));
-				this.hasNextArcFileIterator = new ArcFileIterator(this.mAllArcFiles.get(this.mCurrentIndex));
+				this.arcFileIterator = new ArcFileIterator(
+						this.mAllArcFiles.get(this.mCurrentIndex));
+				this.hasNextArcFileIterator = new ArcFileIterator(
+						this.mAllArcFiles.get(this.mCurrentIndex));
 			} catch (IOException e) {
 				throw new ResourceInitializationException(e);
 			}
@@ -461,7 +484,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 					}
 				}
 				if (!this.hasNextArcFileIterator.hasNext()) {
-					System.out.println("No more document in this ARC-Archive");
+					System.out.println("Finished processing current ARC-Archive");
 					// log current arcfile name to "processedArcs" file for checkpointing
 					String currentArcfileName = this.mAllArcFiles.get(this.mCurrentIndex).getName();
 					this.markArcFileAsProcessed(currentArcfileName);
@@ -509,7 +532,7 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 					if (parentFile != null && (parentFile.isDirectory() || parentFile.mkdirs())) {
 						this.processedArcLogfile.createNewFile();
 						fileExists = true;
-						System.out.println("creating file '" + this.processedArcLogfile.getAbsoluteFile()
+						System.out.println("Creating file: '" + this.processedArcLogfile.getAbsoluteFile()
 								+ " in arc-file input directory.");
 					} else {
 						System.out.println("error creating file '" + this.processedArcLogfile.getAbsoluteFile()
@@ -581,5 +604,14 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 	public static void setARCDirectory(String directory){
 		PARAM_INPUTDIR = directory;
 		PARAM_PROCESSEDARCSLOG = PARAM_INPUTDIR.trim()+"/ProcessedArcsLogfile.txt";
+	}
+
+	/**
+	 * Method to manually set files
+	 * Used for cross validation
+	 * @param files list of files to process
+	 */
+	public static void setARCFileList(List<File> files) {
+		mAllArcFiles = new ArrayList<File>(files);
 	}
 }

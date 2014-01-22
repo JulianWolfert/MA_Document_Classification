@@ -24,6 +24,7 @@ public class DocumentPreprocessor {
 		
 		AggregateBuilder builder = new AggregateBuilder();
 		
+		//Add NLP components
 		if (Configuration.SENTENCE_ANNOTATOR)
 			builder.add(SentenceAnnotator.getDescription());
 		if (Configuration.TOKEN_ANNOTATOR)
@@ -31,7 +32,6 @@ public class DocumentPreprocessor {
 		if (Configuration.STEMMING)
 			builder.add(DefaultSnowballStemmer.getDescription(Configuration.STEMMING_LANGUAGE));
 		
-	    // Now annotate documents with gold standard labels
 	    switch (mode) {
 	      case TRAIN:
 	        // If this is training, put the label categories directly into the default view

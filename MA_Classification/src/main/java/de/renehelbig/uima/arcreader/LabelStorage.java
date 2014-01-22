@@ -110,7 +110,7 @@ public class LabelStorage implements LabelStorageInterface {
 		//Classlabels stored in different textfiles take all
 		File[] fileList = dir.listFiles(new FilenameFilter() {
 		    public boolean accept(File d, String name) {
-			       return name.endsWith(".txt");
+			       return (name.equals("URL_Class_Label_Dokumentenkorpus.txt"));
 			    }
 			});
 		for(File f : fileList){

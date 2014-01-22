@@ -114,28 +114,31 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 	@Override
 	public void train(CollectionReader collectionReader, File outputDirectory) throws Exception {
 		
-		
+		System.err.println();
 		System.err.println("###### START TRAINING ######");
+		System.err.println();
 		
 		/**
 		 * Step 1: Extract features and serialize the raw instance objects
 		 * Note: DocumentClassificationAnnotator sets the various extractor URI values to null by
 		 * default. This signals to the feature extractors that they are being written out for training
 		 **/
-		System.err.println("Step 1: Extracting features and writing raw instances data");
+		System.err.println("*Step 1: Extracting features and writing raw instances data");
 
-		// build and run the training pipeline
+		//Build the PreprocessingPipeline
 		AggregateBuilder builder = DocumentPreprocessor.createPreprocessingAggregate(Configuration.AnnotatorMode.TRAIN, GOLD_VIEW_NAME);
 		
+		//Create the classification annotation pipeline
 		builder = createPipeline(builder, outputDirectory, Configuration.AnnotatorMode.TRAIN);
 		
+		//run pipeline
 		SimplePipeline.runPipeline(collectionReader, builder.createAggregateDescription());
 
 
 		/**
 		* Step 2: Transform features and write training data
 		**/
-		System.err.println("Step 2: Collection feature normalization statistics");
+		System.err.println("*Step 2: Collection feature normalization statistics");
 		// Load the serialized instance data
 		Iterable<Instance<String>> instances = InstanceStream.loadFromDirectory(outputDirectory);
 		featureNormalization(instances, outputDirectory);
@@ -143,7 +146,7 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		/**
 		* Stage 3: Train and write model
 		**/
-		System.err.println("Step 3: Train model and write model.jar file.");
+		System.err.println("*Step 3: Train model and write model.jar file.");
 		trainModel(outputDirectory);
 
 		System.err.println("Training complete!");
@@ -151,10 +154,14 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 	
 	public void classify (CollectionReader collectionReader, File modelDirectory) throws Exception {
 		
+		System.err.println();
 		System.err.println("###### START CLASSIFICATION ######");
+		System.err.println();
 		
+		//Build the PreprocessingPipeline
 		AggregateBuilder builder = DocumentPreprocessor.createPreprocessingAggregate(Configuration.AnnotatorMode.CLASSIFY, GOLD_VIEW_NAME);
 		
+		//Create the classification annotation pipeline
 		builder = createPipeline(builder, modelDirectory, Configuration.AnnotatorMode.CLASSIFY);
 		
 	    //run pipeline
@@ -171,38 +178,50 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 	}
 
 	
-	 @Override
-	  public AnnotationStatistics<String> test(CollectionReader collectionReader, File directory)
-	      throws Exception {
-	    AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
-	    
-		AggregateBuilder builder = DocumentPreprocessor.createPreprocessingAggregate(Configuration.AnnotatorMode.TEST, GOLD_VIEW_NAME);		
-		builder = createPipeline(builder, directory, Configuration.AnnotatorMode.TEST);
-	    
+	@Override
+	public AnnotationStatistics<String> test(CollectionReader collectionReader,
+			File directory) throws Exception {
 
-	    AnalysisEngine engine = builder.createAggregate();
+		System.err.println();
+		System.err.println("###### START TEST ######");
+		System.err.println();
+		
+		AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
 
-	    // Run and evaluate
-	    Function<UsenetDocument, ?> getSpan = AnnotationStatistics.annotationToSpan();
-	    Function<UsenetDocument, String> getCategory = AnnotationStatistics.annotationToFeatureValue("category");
-	    JCasIterable iter = new JCasIterable(collectionReader, engine);
-	    while (iter.hasNext()) {
-	      JCas jCas = iter.next();
-	      JCas goldView = jCas.getView(GOLD_VIEW_NAME);
-	      JCas systemView = jCas.getView(DocumentClassificationEvaluation.SYSTEM_VIEW_NAME);
+		AggregateBuilder builder = DocumentPreprocessor
+				.createPreprocessingAggregate(Configuration.AnnotatorMode.TEST,
+						GOLD_VIEW_NAME);
+		builder = createPipeline(builder, directory,
+				Configuration.AnnotatorMode.TEST);
 
-	      // Get results from system and gold views, and update results accordingly
-	      Collection<UsenetDocument> goldCategories = JCasUtil.select(goldView, UsenetDocument.class);
-	      Collection<UsenetDocument> systemCategories = JCasUtil.select(
-	          systemView,
-	          UsenetDocument.class);
-	      stats.add(goldCategories, systemCategories, getSpan, getCategory);
-	    }
+		AnalysisEngine engine = builder.createAggregate();
 
-	    return stats;
-	  }
-	
+		// Run and evaluate
+		Function<UsenetDocument, ?> getSpan = AnnotationStatistics
+				.annotationToSpan();
+		Function<UsenetDocument, String> getCategory = AnnotationStatistics
+				.annotationToFeatureValue("category");
+		JCasIterable iter = new JCasIterable(collectionReader, engine);
+		while (iter.hasNext()) {
+			JCas jCas = iter.next();
+			JCas goldView = jCas.getView(GOLD_VIEW_NAME);
+			JCas systemView = jCas
+					.getView(DocumentClassificationEvaluation.SYSTEM_VIEW_NAME);
 
+			// Get results from system and gold views, and update results accordingly
+			Collection<UsenetDocument> goldCategories = JCasUtil.select(
+					goldView, UsenetDocument.class);
+			Collection<UsenetDocument> systemCategories = JCasUtil.select(
+					systemView, UsenetDocument.class);
+			stats.add(goldCategories, systemCategories, getSpan, getCategory);
+		}
+
+		return stats;
+	}
+
+	/**
+	 * Creates the classification pipeline according to the annotator mode
+	 **/
 	public static AggregateBuilder createPipeline(
 		      AggregateBuilder builder,
 			  File modelDirectory,
@@ -274,6 +293,8 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		hider.close();
 		
 	}
+	
+	
 	private void featureNormalization(Iterable<Instance<String>> instances, File outputDirectory) throws Exception {
 		
 		/**
@@ -317,7 +338,7 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		// the URIs for the feature
 		// extractor.
 		//
-		System.err.println("Write out model training data");
+		System.out.println("Write out model training data (LibSVM-Format)");
 		LIBSVMStringOutcomeDataWriter dataWriter = new LIBSVMStringOutcomeDataWriter(outputDirectory);
 		int i = 0;
 		for (Instance<String> instance : instances) {
@@ -335,11 +356,6 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 	}
 	
 	
-	
-	
-	//******Not Used methods*********
-	
-	
 	/**
 	 * Method to get ARCCollectionReader for training and classify
 	 * @param dir directory with arc-files
@@ -352,11 +368,16 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		return ArcCollectionReader.getCollectionReader();
 	}
 
-
+	/**
+	 * Method to get ARCCollectionReader for cross validation
+	 * @param files List of files to be processed by the collection reader
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
-	protected CollectionReader getCollectionReader(List<File> arg0)
+	protected CollectionReader getCollectionReader(List<File> files)
 			throws Exception {
-		// in this case not used
-		return null;
+		ArcCollectionReader.setARCFileList(files);
+		return ArcCollectionReader.getCollectionReader();
 	}
 }

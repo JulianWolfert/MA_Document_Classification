@@ -27,6 +27,7 @@ package de.juwo.uima.core;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +45,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
 import org.cleartk.classifier.feature.transform.extractor.ZeroMeanUnitStddevExtractor;
@@ -61,6 +63,7 @@ import de.juwo.cleartk.extractors.LatexExtractor;
 import de.juwo.cleartk.extractors.TfidfExtractor;
 import de.juwo.cleartk.extractors.TitleExtractor;
 import de.juwo.uima.cas.UsenetDocument;
+import de.juwo.util.Configuration;
 import de.renehelbig.uima.arcreader.LabelStorage;
 
 
@@ -153,18 +156,25 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
       CentroidTfidfSimilarityExtractor<String> simExtractor = initCentroidTfIdfSimilarityExtractor();
       ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
-      MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
-      
+      MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor(); 
       LatexExtractor<String> latexExtractor = new LatexExtractor<String>();
       TitleExtractor<String> titleExtractor = new TitleExtractor<String>();
       
-      this.extractor = new CombinedExtractor(
-          tfIdfExtractor,
-          simExtractor,
-          zmusExtractor,
-          minmaxExtractor,
-          latexExtractor,
-          titleExtractor);
+      ArrayList<SimpleFeatureExtractor> extractorList = new ArrayList<SimpleFeatureExtractor>();
+      
+      if (Configuration.TFIDF_FEATURE)
+    	  extractorList.add(tfIdfExtractor);
+      if (Configuration.LATEX_FEATURE)
+    	  extractorList.add(latexExtractor);
+      if (Configuration.TITLE_FEATURE)
+    	  extractorList.add(titleExtractor);
+      
+      extractorList.add(simExtractor);
+      extractorList.add(zmusExtractor);
+      extractorList.add(minmaxExtractor);
+      
+      this.extractor = new CombinedExtractor(extractorList.toArray(new SimpleFeatureExtractor[extractorList.size()]));
+      
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
@@ -238,15 +248,19 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     DocumentAnnotation doc = (DocumentAnnotation) jCas.getDocumentAnnotationFs();
 
+    
+    //Extract all features with the combined extractor from the CAS
     Instance<String> instance = new Instance<String>();
     instance.addAll(this.extractor.extract(jCas, doc));
 
+    //If this is training, get the gold standard and save raw instance
     if (isTraining()) {
       UsenetDocument document = JCasUtil.selectSingle(jCas, UsenetDocument.class);
       instance.setOutcome(document.getCategory());
       this.dataWriter.write(instance);
-    } else {
-      // This is classification, so classify and create UsenetDocument annotation
+    } 
+    // This is classification, so classify and create UsenetDocument annotation
+    else {
       String result = this.classifier.classify(instance.getFeatures());
       UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
       document.setCategory(result);
@@ -254,8 +268,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       
       this.storage.writeClassifiedClassLabel(ViewURIUtil.getURI(jCas).toString(), result);
       documentCounter++;
-      System.out.println("Number of classified documents: "+ documentCounter);
-      
+      //System.out.println("Number of classified documents: "+ documentCounter); 
     }
   }
 

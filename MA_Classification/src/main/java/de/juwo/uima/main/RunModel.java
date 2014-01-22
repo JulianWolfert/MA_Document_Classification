@@ -9,34 +9,30 @@ import de.renehelbig.uima.arcreader.ArcCollectionReader;
 
 /**
  * 
- * Wrapper-Class for classificationpipeline
- * Main-Method of class starts classificationpipeline
- * @author Rene Helbig
+ * Wrapper-Class for run a classification on unlabeled documents
+ * @author Julian Wolfert
  * 
  */
 public class RunModel {
 
-
 	/**
-	 * Standard main-method to start classificationpipeline
-	 * given params are ignored
+	 * Standard main-method to run a new classification given params are ignored
+	 * 
 	 * @param args
 	 * @throws Exception
 	 */
-  public static void main(String[] args) throws Exception {
-	  
-    DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
-    		new File(Configuration.MODEL_PATH));
-   
-    /*
-     * Initialization of ArcCollectionReader with path to ARC-Files
-     */
-	ArcCollectionReader.setARCDirectory(Configuration.PRED_ARC_PATH);
-	CollectionReader collectionReader = ArcCollectionReader.getCollectionReader();
-    
-     /*
-	  * start of trainingpipeline and training of svm
-	  */
-	 evaluation.classify(collectionReader, new File(Configuration.MODEL_PATH));
-  }
+	public static void main(String[] args) throws Exception {
+
+		//Create a new instance of DocumentClassificaitonEvaluation and set model input path
+		DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
+				new File(Configuration.MODEL_PATH));
+
+
+		//Initialization of ArcCollectionReader with path to ARC-Files to classify
+		ArcCollectionReader.setARCDirectory(Configuration.PRED_ARC_PATH);
+		CollectionReader collectionReader = ArcCollectionReader.getCollectionReader();
+
+		//start of classification pipeline
+		evaluation.classify(collectionReader,new File(Configuration.MODEL_PATH));
+	}
 }

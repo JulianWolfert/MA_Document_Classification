@@ -11,35 +11,32 @@ import de.renehelbig.uima.arcreader.ArcCollectionReader;
 
 /**
  * 
- * Wrapper-Class for trainingpipeline
- * Main-Method of class starts trainingpipeline
- * @author Rene Helbig
+ * Wrapper-Class for train a classification model
+ * @author Julian Wolfert
  * 
  */
 public class TrainModel {
 	
 	
 	/**
-	 * Standard main-method to start trainingpipeline
+	 * Standard main-method to train a classification model
 	 * given params are ignored
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
   
+		//Create a new instance of DocumentClassificaitonEvaluation and set model output path
 		DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
     		new File(Configuration.MODEL_PATH),
-    		//params for libSVM "-t 0" -> linear svm
+    		//set parameter for libSVM "-t 0" -> linear svm
     		Configuration.SVM_PARAMETERS);
 		
-	    /*
-	     * Initialization of ArcCollectionReader with path to ARC-Files
-	     */
+		//Initialization of ArcCollectionReader with path to ARC-Files to classify
 		ArcCollectionReader.setARCDirectory(Configuration.TRAIN_ARC_PATH);
 		CollectionReader collectionReader = ArcCollectionReader.getCollectionReader();
-	    /*
-	     * start of trainingpipeline and training of svm
-	     */
+	  
+	    //start of trainingpipeline and training of svm
 	    evaluation.train(collectionReader, new File(Configuration.MODEL_PATH));
 	}
 }

@@ -5,6 +5,14 @@ import java.net.URLClassLoader;
 
 import de.juwo.util.Configuration;
 
+
+/**
+ * 
+ * Suite for command line usage of document classification
+ * Offers different modes to run
+ * @author Julian Wolfert
+ * 
+ */
 public class Suite {
 
 	public static void main(String[] args) throws Exception {
@@ -13,10 +21,12 @@ public class Suite {
 			Configuration.loadConfigFromFile(args[0]);
 		}	
 		
+		System.out.println("Heap Size:" + Runtime.getRuntime().maxMemory() / 1000000);
+		
 		// Local variable
 	    int swValue = 0;
 
-	    while (swValue != 6) {
+	    while (swValue != 7) {
 	    
 	    // Display menu graphics
 	    System.out.println();
@@ -25,10 +35,11 @@ public class Suite {
 	    System.out.println("================================");
 	    System.out.println("|1. Train Model                 |");
 	    System.out.println("|2. Test Model                  |");
-	    System.out.println("|3. Start Classification        |");
-	    System.out.println("|4. Start Label Software        |");
-	    System.out.println("|5. Show Configuration          |");
-	    System.out.println("|6. Exit                        |");
+	    System.out.println("|3. Cross Validation            |");
+	    System.out.println("|4. Run Classification          |");
+	    System.out.println("|5. Run Label Software          |");
+	    System.out.println("|6. Show Configuration          |");
+	    System.out.println("|7. Exit                        |");
 	    System.out.println("================================");
 	    swValue = Keyin.inInt("Select option: ");
 	    System.out.println();
@@ -42,9 +53,12 @@ public class Suite {
 	      TestModel.main(args);
 	      break;
 	    case 3:
+		  CrossValidation.main(args);
+		  break;
+	    case 4:
 	      RunModel.main(args);
 	      break;
-	    case 5:
+	    case 6:
 			Configuration.showConfig();
 			break;
 	    default:
@@ -55,6 +69,11 @@ public class Suite {
 	}
 }
 
+
+
+/**
+ * Util class for check input
+ */
 class Keyin {
 
 	  //*******************************
