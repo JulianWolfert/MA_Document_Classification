@@ -152,32 +152,38 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    try {
-      TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
-      CentroidTfidfSimilarityExtractor<String> simExtractor = initCentroidTfIdfSimilarityExtractor();
-      ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
-      MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor(); 
-      LatexExtractor<String> latexExtractor = new LatexExtractor<String>();
-      TitleExtractor<String> titleExtractor = new TitleExtractor<String>();
-      
-      ArrayList<SimpleFeatureExtractor> extractorList = new ArrayList<SimpleFeatureExtractor>();
-      
-      if (Configuration.TFIDF_FEATURE)
-    	  extractorList.add(tfIdfExtractor);
-      if (Configuration.LATEX_FEATURE)
-    	  extractorList.add(latexExtractor);
-      if (Configuration.TITLE_FEATURE)
-    	  extractorList.add(titleExtractor);
-      
-      extractorList.add(simExtractor);
-      extractorList.add(zmusExtractor);
-      extractorList.add(minmaxExtractor);
-      
-      this.extractor = new CombinedExtractor(extractorList.toArray(new SimpleFeatureExtractor[extractorList.size()]));
-      
-    } catch (IOException e) {
-      throw new ResourceInitializationException(e);
-    }
+		try {
+
+			ArrayList<SimpleFeatureExtractor> extractorList = new ArrayList<SimpleFeatureExtractor>();
+
+			CentroidTfidfSimilarityExtractor<String> simExtractor = initCentroidTfIdfSimilarityExtractor();
+			ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
+			MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
+
+			extractorList.add(simExtractor);
+			extractorList.add(zmusExtractor);
+			extractorList.add(minmaxExtractor);
+
+			if (Configuration.TFIDF_FEATURE) {
+				TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
+				extractorList.add(tfIdfExtractor);
+			}
+
+			if (Configuration.LATEX_FEATURE) {
+				LatexExtractor<String> latexExtractor = new LatexExtractor<String>();
+				extractorList.add(latexExtractor);
+			}
+
+			if (Configuration.TITLE_FEATURE) {
+				TitleExtractor<String> titleExtractor = new TitleExtractor<String>();
+				extractorList.add(titleExtractor);
+			}
+
+			this.extractor = new CombinedExtractor(extractorList.toArray(new SimpleFeatureExtractor[extractorList.size()]));
+
+		} catch (IOException e) {
+			throw new ResourceInitializationException(e);
+		}
   }
 
   private TfidfExtractor<String> initTfIdfExtractor() throws IOException {	

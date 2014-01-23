@@ -65,7 +65,7 @@ public class Configuration {
 	public static final Boolean TITLE_FEATURE		= 	true;
 	
 	//Define the search strings for Latex-Extractor
-	public static final List<String> LATEX_STRINGS = Arrays.asList("tex", "latex");
+	public static final List<String> LATEX_STRINGS = Arrays.asList("latex");
 
 
 	/**

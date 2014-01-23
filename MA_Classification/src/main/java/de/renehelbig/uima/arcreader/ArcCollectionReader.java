@@ -298,11 +298,11 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 						documentText = extractText(outStream);
 						pdfMetaData = extractPDFMetadata(outStream);
 					}catch(TikaException tex){
-						System.out.println("PDF encrypted or not readable");
+						//System.out.println("PDF encrypted or not readable");
 						documentText = "";
 						pdfMetaData = null;
 					}catch(IOException ioex){
-						System.out.println("Error on parsing pdf document");
+						//System.out.println("Error on parsing pdf document");
 						documentText = "";
 						pdfMetaData = null;
 					}
