@@ -305,13 +305,16 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		 * Normalization by example of Lee Becker
 		 **/
 
-		// Collect TF*IDF stats for computing tf*idf values on extracted tokens
+		
+			// Collect TF*IDF stats for computing tf*idf values on extracted
+			// tokens
 		URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectory);
-		TfidfExtractor<String> extractor = new TfidfExtractor<String>(
-				DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
-		extractor.train(instances);
-		extractor.save(tfIdfDataURI);
-
+		TfidfExtractor<String> extractor = new TfidfExtractor<String>(DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
+		if (Configuration.TFIDF_FEATURE) {
+			extractor.train(instances);
+			extractor.save(tfIdfDataURI);
+		}
+		
 		// Collect TF*IDF Centroid stats for computing similarity to corpus centroid
 		URI tfIdfCentroidSimDataURI = DocumentClassificationAnnotator.createIdfCentroidSimilarityDataURI(outputDirectory);
 		CentroidTfidfSimilarityExtractor<String> simExtractor = new CentroidTfidfSimilarityExtractor<String>(
@@ -344,7 +347,8 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		for (Instance<String> instance : instances) {
 			i ++;
 
-			instance = extractor.transform(instance);
+			if (Configuration.TFIDF_FEATURE)
+				instance = extractor.transform(instance);
 			instance = simExtractor.transform(instance);
 			instance = zmusExtractor.transform(instance);
 			instance = minmaxExtractor.transform(instance);

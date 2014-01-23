@@ -43,7 +43,7 @@ public class CrossValidation {
 	    List<File> trainFiles = getFilesFromDirectory(new File(Configuration.TRAIN_ARC_PATH));
 	    
 	    //Start the cross validation with loaded files
-		List<AnnotationStatistics<String>> foldStats = evaluation.crossValidation(trainFiles, 2);
+		List<AnnotationStatistics<String>> foldStats = evaluation.crossValidation(trainFiles, Configuration.CROSS_VALIDATION_FOLDS);
 		
 		//Calculate and print out results
 	    AnnotationStatistics<String> crossValidationStats = AnnotationStatistics.addAll(foldStats);

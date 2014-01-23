@@ -50,6 +50,9 @@ public class Configuration {
 	//set the SVM parameters for training
 	public static List<String> SVM_PARAMETERS = Arrays.asList("-t", "0");
 	
+	//number of folds for cross validation
+	public static int CROSS_VALIDATION_FOLDS		= 	2;
+	
 	//set the NLP Configuration
 	public static final String STEMMING_LANGUAGE 	= 	"German";
 	public static final Boolean TOKEN_ANNOTATOR		=   true;
@@ -62,7 +65,7 @@ public class Configuration {
 	public static final Boolean TITLE_FEATURE		= 	true;
 	
 	//Define the search strings for Latex-Extractor
-	public static final List<String> LATEX_STRINGS = Arrays.asList("Tex", "Latex");
+	public static final List<String> LATEX_STRINGS = Arrays.asList("tex", "latex");
 
 
 	/**
@@ -93,6 +96,9 @@ public class Configuration {
 			if (prop.getProperty("SVM_PARAMETERS") != null) {
 				SVM_PARAMETERS = Arrays.asList(prop.getProperty("SVM_PARAMETERS").split(","));
 			}
+			if (prop.getProperty("CROSS_VALIDATION_FOLDS") != null)
+				CROSS_VALIDATION_FOLDS = Integer.parseInt(prop.getProperty("CROSS_VALIDATION_FOLDS"));	
+			
 
 			
 		} catch (FileNotFoundException e) {

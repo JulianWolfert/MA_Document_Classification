@@ -35,17 +35,17 @@ public class LatexExtractor<OUTCOME_T> implements SimpleFeatureExtractor{
 			
 			for (int i=0; i < Configuration.LATEX_STRINGS.size(); i++) {
 				
-				if (creator != null && creator.contains(Configuration.LATEX_STRINGS.get(i))) {
+				if (creator != null && creator.toLowerCase().contains(Configuration.LATEX_STRINGS.get(i))) {
 					f.setValue(1);
 					System.out.println("Found one with Latex");
 					break;
 				}
-				if (producer != null && producer.contains(Configuration.LATEX_STRINGS.get(i))) {
+				if (producer != null && producer.toLowerCase().contains(Configuration.LATEX_STRINGS.get(i))) {
 					f.setValue(1);
 					System.out.println("Found one with Latex");
 					break;
 				}
-				if (author != null && producer.contains(Configuration.LATEX_STRINGS.get(i))) {
+				if (author != null && producer.toLowerCase().contains(Configuration.LATEX_STRINGS.get(i))) {
 					f.setValue(1);
 					System.out.println("Found one with Latex");
 					break;
