@@ -306,14 +306,13 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		 **/
 
 		
-			// Collect TF*IDF stats for computing tf*idf values on extracted
-			// tokens
+		// Collect TF*IDF stats for computing tf*idf values on extracted
+		// tokens
 		URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectory);
 		TfidfExtractor<String> extractor = new TfidfExtractor<String>(DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
-		if (Configuration.TFIDF_FEATURE) {
-			extractor.train(instances);
-			extractor.save(tfIdfDataURI);
-		}
+		extractor.train(instances);
+		extractor.save(tfIdfDataURI);
+
 		
 		// Collect TF*IDF Centroid stats for computing similarity to corpus centroid
 		URI tfIdfCentroidSimDataURI = DocumentClassificationAnnotator.createIdfCentroidSimilarityDataURI(outputDirectory);
@@ -346,9 +345,7 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		int i = 0;
 		for (Instance<String> instance : instances) {
 			i ++;
-
-			if (Configuration.TFIDF_FEATURE)
-				instance = extractor.transform(instance);
+			instance = extractor.transform(instance);
 			instance = simExtractor.transform(instance);
 			instance = zmusExtractor.transform(instance);
 			instance = minmaxExtractor.transform(instance);

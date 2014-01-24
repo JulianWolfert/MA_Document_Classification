@@ -14,9 +14,7 @@ import de.juwo.util.Configuration;
 
 
 public class LabelStorage implements LabelStorageInterface {
-	// directory of documents with class labels
-	private String workingDir = "/Users/Jules/Projects/HTW/Masterarbeit";
-
+	
 	/**
 	 * method to store class label coresponding to document url
 	 * implements method of interface LabelStorageInterface

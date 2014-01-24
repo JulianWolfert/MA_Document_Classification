@@ -23,8 +23,8 @@ public class Configuration {
 	public static enum AnnotatorMode {TRAIN, TEST, CLASSIFY};
 	
 	//Set paths for arc-Files
-	public static String TRAIN_ARC_PATH 		= 	"/Volumes/Data2/Masterarbeit-Arc/Test";
-	public static String TEST_ARC_PATH 			= 	"/Volumes/Data2/Masterarbeit-Arc/Test";
+	public static String TRAIN_ARC_PATH 		= 	"/Users/Jules/Projects/HTW/Masterarbeit/Testlauf_Train";
+	public static String TEST_ARC_PATH 			= 	"/Users/Jules/Projects/HTW/Masterarbeit/Testlauf_Test";
 	public static String PRED_ARC_PATH			= 	"/Volumes/Data2/Masterarbeit-Arc/Test";
 	public static String LABEL_STORAGE_PATH		=   "/Users/Jules/Projects/HTW/Masterarbeit";
 	public static String MODEL_PATH 			= 	"/Users/Jules/Projects/HTW/Masterarbeit/Model";
@@ -60,7 +60,6 @@ public class Configuration {
 	public static final Boolean SENTENCE_ANNOTATOR	= 	true;
 	
 	//Set the feature configuration
-	public static final Boolean TFIDF_FEATURE		= 	true;
 	public static final Boolean LATEX_FEATURE		=	true;
 	public static final Boolean TITLE_FEATURE		= 	true;
 	
@@ -126,5 +125,6 @@ public class Configuration {
 		System.out.println("SVM_PARAMETERS: " + SVM_PARAMETERS);
 		System.out.println("CLASS 1: " + CLASS_1);
 		System.out.println("CLASS 2: " + CLASS_2);
+		System.out.println("CROSS VALIDATION FOLDS: " + CROSS_VALIDATION_FOLDS);
 	}
 }

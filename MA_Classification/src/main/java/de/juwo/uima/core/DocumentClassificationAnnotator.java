@@ -156,18 +156,17 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
 			ArrayList<SimpleFeatureExtractor> extractorList = new ArrayList<SimpleFeatureExtractor>();
 
+			TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
 			CentroidTfidfSimilarityExtractor<String> simExtractor = initCentroidTfIdfSimilarityExtractor();
 			ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
 			MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
 
+			extractorList.add(tfIdfExtractor);
 			extractorList.add(simExtractor);
 			extractorList.add(zmusExtractor);
 			extractorList.add(minmaxExtractor);
+			
 
-			if (Configuration.TFIDF_FEATURE) {
-				TfidfExtractor<String> tfIdfExtractor = initTfIdfExtractor();
-				extractorList.add(tfIdfExtractor);
-			}
 
 			if (Configuration.LATEX_FEATURE) {
 				LatexExtractor<String> latexExtractor = new LatexExtractor<String>();
