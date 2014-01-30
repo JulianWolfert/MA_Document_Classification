@@ -31,7 +31,7 @@ public class Suite {
 	    // Display menu graphics
 	    System.out.println();
 	    System.out.println("================================");
-	    System.out.println("|       ClASSIFICATION MENU     |");
+	    System.out.println("|       CLASSIFICATION MENU     |");
 	    System.out.println("================================");
 	    System.out.println("|1. Train Model                 |");
 	    System.out.println("|2. Test Model                  |");

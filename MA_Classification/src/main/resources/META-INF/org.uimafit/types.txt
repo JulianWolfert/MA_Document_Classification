@@ -1,1 +1,1 @@
-classpath*:/**/*.xml
+classpath*:de.juwo.uima.cas/*.xml

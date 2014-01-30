@@ -36,7 +36,9 @@ public class CrossValidation {
 		
 		//Create a new instance of DocumentClassificaitonEvaluation and set model output path
 	    DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
-	    		new File(Configuration.MODEL_PATH));
+	    		new File(Configuration.MODEL_PATH),
+	    		//set parameter for libSVM "-t 0" -> linear svm
+	    		Configuration.SVM_PARAMETERS);
 	   
 	    
 		//Get all arc.gz-Files from train directory
