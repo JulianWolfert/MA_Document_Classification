@@ -58,12 +58,12 @@ import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
 
-import de.christianherta.uima.core.casconsumer.SolrXMLFileWriter;
 import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
 import de.juwo.cleartk.extractors.TfidfExtractor;
+import de.juwo.uima.arcreader.ArcCollectionReader;
 import de.juwo.uima.cas.UsenetDocument;
+import de.juwo.uima.casconsumer.SolrXMLFileWriter;
 import de.juwo.util.Configuration;
-import de.renehelbig.uima.arcreader.ArcCollectionReader;
 
 
 /**
@@ -76,8 +76,7 @@ import de.renehelbig.uima.arcreader.ArcCollectionReader;
  * 
  * <p>
  * 
- * 
- * @author Rene Helbig
+ * @author Julian Wolfert 
  */
 public class DocumentClassificationEvaluation extends
 Evaluation_ImplBase<File, AnnotationStatistics<String>> {
@@ -152,6 +151,9 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		System.err.println("Training complete!");
 	}
 	
+	/**
+	 * Method to start new classification process
+	 */
 	public void classify (CollectionReader collectionReader, File modelDirectory) throws Exception {
 		
 		System.err.println();
@@ -171,13 +173,18 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		
 	}
 	
+	/**
+	 * Method to train and test afterwards
+	 */
 	public AnnotationStatistics<String> trainAndTest(CollectionReader collectionReader, File modelDirectory) throws Exception {	
 		this.train(collectionReader, modelDirectory);
 		AnnotationStatistics<String> holdoutStat = this.test(collectionReader, modelDirectory);
 		return holdoutStat;
 	}
 
-	
+	/**
+	 * Method to test a trained model
+	 */
 	@Override
 	public AnnotationStatistics<String> test(CollectionReader collectionReader,
 			File directory) throws Exception {
@@ -242,7 +249,7 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 	        break;
 	      
 	      case TEST:
-	      
+	    	//nothing to do
 	      case CLASSIFY:
 	      default:
 	        // For testing and standalone classification, we want to create a
@@ -278,7 +285,9 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		  
 	}
 	
-	
+	/**
+	 * Start to train the model
+	 */
 	private void trainModel(File outputDirectory) throws Exception{
 		
 		/**
@@ -294,7 +303,9 @@ Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 		
 	}
 	
-	
+	/**
+	 * Method to start the feature normalization and write out model data
+	 */
 	private void featureNormalization(Iterable<Instance<String>> instances, File outputDirectory) throws Exception {
 		
 		/**

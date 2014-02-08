@@ -5,9 +5,9 @@ import java.io.File;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.eval.AnnotationStatistics;
 
+import de.juwo.uima.arcreader.ArcCollectionReader;
 import de.juwo.uima.core.DocumentClassificationEvaluation;
 import de.juwo.util.Configuration;
-import de.renehelbig.uima.arcreader.ArcCollectionReader;
 
 
 /**

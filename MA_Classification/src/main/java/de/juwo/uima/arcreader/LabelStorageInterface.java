@@ -1,8 +1,9 @@
-package de.renehelbig.uima.arcreader;
+package de.juwo.uima.arcreader;
 import java.util.HashMap;
 
 /**
- * interface for storage of document class labels
+ * Interface for storage of document class labels
+ * Copyright by rene helbig
  * @author rene helbig
  *
  */

@@ -12,6 +12,13 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import de.juwo.util.Configuration;
 import de.juwo.util.Configuration.AnnotatorMode;
 
+
+/**
+ * 
+ * This class helps to create the preprocessing engine (NLP components)
+ * @author Julian Wolfert
+ * 
+ */
 public class DocumentPreprocessor {
 
 	public DocumentPreprocessor() {

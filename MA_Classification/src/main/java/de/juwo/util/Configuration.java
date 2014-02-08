@@ -23,17 +23,18 @@ public class Configuration {
 	public static enum AnnotatorMode {TRAIN, TEST, CLASSIFY};
 	
 	//Set paths for arc-Files
-	public static String TRAIN_ARC_PATH 		= 	"/Users/Jules/Projects/HTW/Masterarbeit/Testlauf_Train";
-	public static String TEST_ARC_PATH 			= 	"/Users/Jules/Projects/HTW/Masterarbeit/Testlauf_Test";
+	public static String TRAIN_ARC_PATH 		= 	"/Volumes/Data2/Masterarbeit-Arc/Test";
+	public static String TEST_ARC_PATH 			= 	"/Volumes/Data2/Masterarbeit-Arc/Test";
 	public static String PRED_ARC_PATH			= 	"/Volumes/Data2/Masterarbeit-Arc/Test";
 	public static String LABEL_STORAGE_PATH		=   "/Users/Jules/Projects/HTW/Masterarbeit";
-	public static String MODEL_PATH 			= 	"/Users/Jules/Projects/HTW/Masterarbeit/Model";
-	public static String OUTPUT_SOLR_XML_WRITER = 	"/Users/Jules/Projects/HTW/Masterarbeit";
+	public static String MODEL_PATH 			= 	"/Volumes/Data2/Masterarbeit-Arc/Test/Model";
+	public static String OUTPUT_SOLR_XML_WRITER = 	"/Volumes/Data2/Masterarbeit-Arc/Test";
 	
 	//Set the labels for classes
 	public static final String CLASS_1				=	"is.Teach";
 	public static final String CLASS_2				=	"rs.no";
 	
+	//Set class names for label tool
 	public static final Map<String, String> CLASS_NAMES;
 	static {
 		Map<String,String> tmpMap = new HashMap<String, String>();
@@ -48,10 +49,10 @@ public class Configuration {
 	
 	
 	//set the SVM parameters for training
-	public static List<String> SVM_PARAMETERS = Arrays.asList("-t", "0");
+	public static List<String> SVM_PARAMETERS = Arrays.asList("-t", "2");
 	
 	//number of folds for cross validation
-	public static int CROSS_VALIDATION_FOLDS		= 	2;
+	public static int CROSS_VALIDATION_FOLDS		= 	3;
 	
 	//set the NLP Configuration
 	public static final String STEMMING_LANGUAGE 	= 	"German";
@@ -115,6 +116,8 @@ public class Configuration {
 	 * @throws Exception
 	 */
 	public static void showConfig() {
+		
+		System.out.println("Heap Size:" + Runtime.getRuntime().maxMemory() / 1000000);
 		
 		System.out.println("TRAIN_ARC_PATH:" + TRAIN_ARC_PATH);
 		System.out.println("TEST_ARC_PATH: "+ TEST_ARC_PATH);

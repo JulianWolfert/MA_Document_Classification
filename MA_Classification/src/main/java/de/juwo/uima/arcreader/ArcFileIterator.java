@@ -1,4 +1,4 @@
-package de.renehelbig.uima.arcreader;
+package de.juwo.uima.arcreader;
 
 import java.io.File;
 import java.io.IOException;

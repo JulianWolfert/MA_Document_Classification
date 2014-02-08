@@ -62,9 +62,9 @@ import de.juwo.cleartk.extractors.CentroidTfidfSimilarityExtractor;
 import de.juwo.cleartk.extractors.LatexExtractor;
 import de.juwo.cleartk.extractors.TfidfExtractor;
 import de.juwo.cleartk.extractors.TitleExtractor;
+import de.juwo.uima.arcreader.LabelStorage;
 import de.juwo.uima.cas.UsenetDocument;
 import de.juwo.util.Configuration;
-import de.renehelbig.uima.arcreader.LabelStorage;
 
 
 /**
@@ -79,7 +79,8 @@ import de.renehelbig.uima.arcreader.LabelStorage;
  * more complex features that require aggregating statistics for transformation prior to training
  * and classification.
  * 
- * @author Lee Becker minor changes by Rene Helbig to make it work in this scenario
+ * @author Lee Becker and Rene Helbig minor changes by Julian Wolfert
+ * Configurable Feature extractor list
  * 
  */
 public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
@@ -161,13 +162,14 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 			ZeroMeanUnitStddevExtractor<String> zmusExtractor = initZmusExtractor();
 			MinMaxNormalizationExtractor<String> minmaxExtractor = initMinMaxExtractor();
 
+			//add default feature extractors
 			extractorList.add(tfIdfExtractor);
 			extractorList.add(simExtractor);
 			extractorList.add(zmusExtractor);
 			extractorList.add(minmaxExtractor);
 			
 
-
+			//add additional extractors
 			if (Configuration.LATEX_FEATURE) {
 				LatexExtractor<String> latexExtractor = new LatexExtractor<String>();
 				extractorList.add(latexExtractor);

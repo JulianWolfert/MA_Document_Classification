@@ -4,6 +4,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import de.juwo.util.Configuration;
+import de.juwo.util.PDFViewer;
 
 
 /**
@@ -21,7 +22,7 @@ public class Suite {
 			Configuration.loadConfigFromFile(args[0]);
 		}	
 		
-		System.out.println("Heap Size:" + Runtime.getRuntime().maxMemory() / 1000000);
+
 		
 		// Local variable
 	    int swValue = 0;
@@ -58,9 +59,12 @@ public class Suite {
 	    case 4:
 	      RunModel.main(args);
 	      break;
+	    case 5:
+		  PDFViewer.main(args);
+		  break;
 	    case 6:
-			Configuration.showConfig();
-			break;
+		  Configuration.showConfig();
+		  break;
 	    default:
 	      System.out.println("Invalid selection");
 	      break; // This break is not really necessary

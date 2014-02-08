@@ -1,4 +1,4 @@
-package de.renehelbig.uima.arcreader;
+package de.juwo.uima.arcreader;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -56,7 +56,6 @@ import de.juwo.uima.cas.DocumentMetadata;
 import de.juwo.uima.cas.PDFMetadata;
 
 
-
 /**
  * <p>
  * The ArcCollectionReader reads a collection of heritrix archive files (ARC file format) from a configurable
@@ -96,7 +95,7 @@ import de.juwo.uima.cas.PDFMetadata;
  * </tr>
  * </table>
  * 
- * @author Julian Wolfert previous versions by Prof. Dr. Herta and Rene Helbig
+ * @author Julian Wolfert previous versions by Prof. Dr. Christian Herta and Rene Helbig
  * Changes to extract Text and metadata of Documents and to work with clearTK
  * Changes to work with cross validation of clearTK
  */
@@ -294,15 +293,12 @@ public class ArcCollectionReader extends CollectionReader_ImplBase {
 					String documentText;
 					PDDocumentInformation pdfMetaData;
 					
+					//extract text and pdf metadata from file
 					try{
 						documentText = extractText(outStream);
 						pdfMetaData = extractPDFMetadata(outStream);
-					}catch(TikaException tex){
+					}catch(Exception ex){
 						//System.out.println("PDF encrypted or not readable");
-						documentText = "";
-						pdfMetaData = null;
-					}catch(IOException ioex){
-						//System.out.println("Error on parsing pdf document");
 						documentText = "";
 						pdfMetaData = null;
 					}

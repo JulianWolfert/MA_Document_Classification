@@ -1,4 +1,4 @@
-package de.christianherta.uima.core.casconsumer;
+package de.juwo.uima.casconsumer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,6 +29,13 @@ import org.uimafit.util.JCasUtil;
 import de.juwo.uima.cas.UsenetDocument;
 import de.juwo.util.Configuration;
 
+/**
+ * 
+ * Write the classification result to XML file (Apache Solr format)
+ * Changes by Julian Wolfert previous version by Prof. Dr. Christian Herta (HTW-Berlin)
+ * @author Julian Wolfert
+ * 
+ */
 public class SolrXMLFileWriter extends JCasConsumer_ImplBase {
 	/**
 	 * Name of configuration parameter that must be set to the path of a
@@ -68,7 +75,7 @@ public class SolrXMLFileWriter extends JCasConsumer_ImplBase {
 	
 	private void openXMLFile() throws IOException, XMLStreamException, FactoryConfigurationError {
 			
-			String docName = "doc" + nbFiles + ".xml";
+			String docName = "Class_1_Documents_Solr.xml";
 			logger.debug("Create XMLFile " + docName + " in Dir " + mOutputDir);
 			File file = new File(mOutputDir, docName);
 			
@@ -93,8 +100,7 @@ public class SolrXMLFileWriter extends JCasConsumer_ImplBase {
 
 	/**
 	 * Processes the CAS which was populated by the TextAnalysisEngines. <br>
-	 * In this case, the CAS is converted to XMI and written into the output
-	 * file .
+	 * Writes out only documents which are classified with Class_1.
 	 * 
 	 * @param aCAS
 	 *            a CAS which has been populated by the TAEs
@@ -104,34 +110,15 @@ public class SolrXMLFileWriter extends JCasConsumer_ImplBase {
 	 * 
 	 */
 	public void process(JCas aCAS) throws  AnalysisEngineProcessException {
-
-/*		JCas jcas = aCAS;
-		JCas rawView = null;
-		JCas detagView = null;
-		try {
-			rawView = jcas.getView(rawContent);
-			detagView = jcas.getView(detagContent);
-		} catch (CASException e) {
-			throw new AnalysisEngineProcessException(e);
-		}
-		
-		if(rawView == null || detagView == null){
-			logger.error("rawView == null || detagView == null");
-		}
-		
-		FSIterator<?> iterator = rawView.getJFSIndexRepository().getAllIndexedFS(
-				DocumentMetadata.type);
-		if (iterator.hasNext()) {*/
-					
-			mDocNum++;
-			UsenetDocument document = JCasUtil.selectSingle(aCAS, UsenetDocument.class);
-			//String host = docMetadata.getHost();
-			String documentURL = ViewURIUtil.getURI(aCAS).toString();
-			//String mimeType = docMetadata.getMimeType();		
-			String documentText = aCAS.getDocumentText();
-			String documentCategory = document.getCategory();
+	
+		mDocNum++;
+		UsenetDocument document = JCasUtil.selectSingle(aCAS, UsenetDocument.class);
+		String documentURL = ViewURIUtil.getURI(aCAS).toString();		
+		String documentText = aCAS.getDocumentText();
+		String documentCategory = document.getCategory();
 			
-		if (documentCategory.equals("is.Teach")) {
+		//Write out only Class_1 documents
+		if (documentCategory.equals(Configuration.CLASS_1)) {
 			
 			try {
 				if(out == null) {

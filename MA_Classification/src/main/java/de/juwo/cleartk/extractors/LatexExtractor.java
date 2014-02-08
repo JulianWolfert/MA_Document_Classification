@@ -13,12 +13,19 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import de.juwo.uima.cas.PDFMetadata;
 import de.juwo.util.Configuration;
 
+/**
+ * 
+ * This class extract the latex information from the pdf metadata
+ * @author Julian Wolfert
+ * 
+ */
 public class LatexExtractor<OUTCOME_T> implements SimpleFeatureExtractor{
 
 	@Override
 	public List<Feature> extract(JCas view, Annotation focusAnnotation)
 			throws CleartkExtractorException {
 		
+		//get the pdf metadata from view
 		FSIterator<?> iterator = view.getJFSIndexRepository().getAllIndexedFS(
 				PDFMetadata.type);
 		
@@ -27,27 +34,26 @@ public class LatexExtractor<OUTCOME_T> implements SimpleFeatureExtractor{
 		
 		if (iterator.hasNext()) {
 		
+			//get pdfMetadata object
 			PDFMetadata pdfMetadata = (PDFMetadata) iterator.next();
 			
 			String creator = pdfMetadata.getCreator();
 			String producer = pdfMetadata.getProducer();
 			String author = pdfMetadata.getAuthor();
 			
+			//search for latex strings in metadata fields
 			for (int i=0; i < Configuration.LATEX_STRINGS.size(); i++) {
 				
 				if (creator != null && creator.toLowerCase().contains(Configuration.LATEX_STRINGS.get(i))) {
 					f.setValue(1);
-					System.out.println("Found one with Latex");
 					break;
 				}
 				if (producer != null && producer.toLowerCase().contains(Configuration.LATEX_STRINGS.get(i))) {
 					f.setValue(1);
-					System.out.println("Found one with Latex");
 					break;
 				}
 				if (author != null && author.toLowerCase().contains(Configuration.LATEX_STRINGS.get(i))) {
 					f.setValue(1);
-					System.out.println("Found one with Latex");
 					break;
 				}
 				

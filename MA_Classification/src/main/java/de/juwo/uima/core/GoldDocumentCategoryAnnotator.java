@@ -34,7 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 
-import de.renehelbig.uima.arcreader.LabelStorage;
+import de.juwo.uima.arcreader.LabelStorage;
 import de.juwo.uima.cas.UsenetDocument;
 import de.juwo.util.*;
 
@@ -46,8 +46,8 @@ import de.juwo.util.*;
  * This class will assign the gold-standard document categories for the documents
  * by using the stored manuall classlabel information
  * 
- * @author Rene Helbig
- * 
+ * @author Julian Wolfert previous version by Rene Helbig
+ * Work with configurable class names
  */
 public class GoldDocumentCategoryAnnotator extends JCasAnnotator_ImplBase {
 	private HashMap<String, String> uriIsClass = null;
@@ -94,8 +94,6 @@ public class GoldDocumentCategoryAnnotator extends JCasAnnotator_ImplBase {
 		} catch (URISyntaxException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		//System.out.println("Teach: "+teachStuffCounter);
-		//System.out.println("Other: "+otherStuffCounter);
 	}
 
 }

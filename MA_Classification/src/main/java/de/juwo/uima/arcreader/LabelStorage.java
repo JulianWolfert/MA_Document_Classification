@@ -1,4 +1,4 @@
-package de.renehelbig.uima.arcreader;
+package de.juwo.uima.arcreader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +12,13 @@ import java.util.StringTokenizer;
 
 import de.juwo.util.Configuration;
 
-
+/**
+ * 
+ * Utility class to store and load class labels
+ * Copyright by Rene Helbig
+ * @author Rene Helbig
+ * 
+ */
 public class LabelStorage implements LabelStorageInterface {
 	
 	/**
@@ -108,7 +114,7 @@ public class LabelStorage implements LabelStorageInterface {
 		//Classlabels stored in different textfiles take all
 		File[] fileList = dir.listFiles(new FilenameFilter() {
 		    public boolean accept(File d, String name) {
-			       return (name.equals("URL_Class_Label_Dokumentenkorpus.txt"));
+			       return (name.equals("TrainingLabels.txt"));
 			    }
 			});
 		for(File f : fileList){
